@@ -14,6 +14,7 @@ import (
 	pb "github.com/EwanValentine/shippy/consignment-service/proto/consignment"
 	userService "github.com/EwanValentine/shippy/user-service/proto/user"
 	vesselProto "github.com/EwanValentine/shippy/vessel-service/proto/vessel"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/metadata"
@@ -72,6 +73,8 @@ func main() {
 func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 	return func(ctx context.Context, req server.Request, resp interface{}) error {
 		meta, ok := metadata.FromContext(ctx)
+
+		spew.Dump(meta)
 		if !ok {
 			return errors.New("no auth meta-data found in request")
 		}
@@ -83,12 +86,12 @@ func AuthWrapper(fn server.HandlerFunc) server.HandlerFunc {
 		authResp, err := authClient.ValidateToken(ctx, &userService.Token{
 			Token: token,
 		})
-		log.Println("Auth resp:", authResp)
-		log.Println("Err:", err)
 		if err != nil {
+			log.Println("AuthWrapper Err:", err)
 			return err
 		}
 
+		log.Println("Auth resp:", authResp)
 		err = fn(ctx, req, resp)
 		return err
 	}

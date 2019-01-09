@@ -70,14 +70,14 @@ func (srv *service) Create(ctx context.Context, req *pb.User, res *pb.Response) 
 }
 
 func (srv *service) ValidateToken(ctx context.Context, req *pb.Token, res *pb.Token) error {
-
+	// spew.Dump(req.Token)
 	// Decode token
 	claims, err := srv.tokenService.Decode(req.Token)
 	if err != nil {
 		return err
 	}
 
-	log.Println(claims)
+	log.Println("get token", claims)
 
 	if claims.User.Id == "" {
 		return errors.New("invalid user")

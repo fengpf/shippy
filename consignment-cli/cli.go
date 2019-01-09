@@ -7,6 +7,7 @@ import (
 	"os"
 
 	pb "github.com/EwanValentine/shippy/consignment-service/proto/consignment"
+	"github.com/davecgh/go-spew/spew"
 	microclient "github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/cmd"
 	"github.com/micro/go-micro/metadata"
@@ -37,6 +38,8 @@ func main() {
 	// Contact the server and print out its response.
 	file := defaultFilename
 	var token string
+
+	spew.Dump(os.Args)
 	if len(os.Args) > 1 {
 		file = os.Args[1]
 		token = os.Args[2]

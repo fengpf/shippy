@@ -20,7 +20,11 @@ func createDummyData(repo Repository) {
 		{Id: "vessel001", Name: "Kane's Salty Secret", MaxWeight: 200000, Capacity: 500},
 	}
 	for _, v := range vessels {
-		repo.Create(v)
+		if err := repo.Create(v); err != nil {
+			log.Println("createDummyData error:", err)
+		} else {
+			log.Println("createDummyData success!")
+		}
 	}
 }
 
